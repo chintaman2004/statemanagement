@@ -1,8 +1,7 @@
-// ignore_for_file: unused_import
-
+// lib/screens/auth/signin/signin_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'signin_viewmodel.dart';
 
 class SignInView extends StatelessWidget {
@@ -18,7 +17,7 @@ class SignInView extends StatelessWidget {
 }
 
 class _SignInScaffold extends StatelessWidget {
-  const _SignInScaffold();
+  const _SignInScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +52,9 @@ class _SignInScaffold extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Login to Your Account',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      'Welcome Back',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -68,17 +65,43 @@ class _SignInScaffold extends StatelessWidget {
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
-                  hintText: 'andrew_ainsley@yourdomain.com',
+                  hintText: 'your@email.com',
                 ),
               ),
               const SizedBox(height: 14),
               TextField(
                 controller: vm.passCtrl,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock_outline),
-                  hintText: 'Enter your password',
+                obscureText: vm.obscure,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  hintText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: vm.toggleObscure,
+                    icon: Icon(
+                        vm.obscure ? Icons.visibility_off : Icons.visibility),
+                  ),
                 ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  // ⬇️ GoRouter navigation to the named 'home' route
+                  onPressed: () => context.goNamed('home'),
+                  child: const Text('Sign In'),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Don't have an account? "),
+                  TextButton(
+                    // ⬇️ GoRouter push to 'signup'
+                    onPressed: () => context.pushNamed('signup'),
+                    child: const Text('Sign Up'),
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,51 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:real_estate_app/core/app_routes.dart';
 import 'splash_viewmodel.dart';
 
-class SplashView extends StatefulWidget {
+class SplashView extends StatelessWidget {
   const SplashView({super.key});
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => SplashViewModel(),
+      child: const _SplashScaffold(),
+    );
+  }
 }
 
-class _SplashViewState extends State<SplashView> {
-  final vm = SplashViewModel();
+class _SplashScaffold extends StatefulWidget {
+  const _SplashScaffold();
 
+  @override
+  State<_SplashScaffold> createState() => _SplashScaffoldState();
+}
+
+class _SplashScaffoldState extends State<_SplashScaffold> {
   @override
   void initState() {
     super.initState();
-    vm.init(context);
+    _navigate();
+  }
+
+  Future<void> _navigate() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    Navigator.pushReplacementNamed(context, AppRouter.signin);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 124,
-                height: 124,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5FF),
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Image.asset('assets/logo.png', fit: BoxFit.contain),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Discover Best\nSuitable Property',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-              ),
-            ],
-          ),
-        ),
+    return const Scaffold(
+      body: Center(
+        child: FlutterLogo(size: 100),
       ),
     );
   }

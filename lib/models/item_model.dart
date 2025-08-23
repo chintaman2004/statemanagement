@@ -1,18 +1,14 @@
-// lib/models/property_model.dart
-
-class Property {
+class ItemModel {
   final String id;
   final String title;
   final double price;
-  final String location;
   final String imageUrl;
   final String description;
 
-  Property({
+  ItemModel({
     required this.id,
     required this.title,
     required this.price,
-    required this.location,
     required this.imageUrl,
     required this.description,
   });

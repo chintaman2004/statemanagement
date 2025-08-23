@@ -1,18 +1,52 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
-import 'package:real_estate_app/view/Signin/signin_view.dart';
-import '../view/signin/signin_view.dart' hide SignInView;
+import 'package:go_router/go_router.dart';
+import '../models/item_model.dart';
+import '../view/signin/signin_view.dart';
+import '../view/signup/signup_view.dart';
+import '../view/Home/home_view.dart';
+import '../view/Detail/detail_view.dart';
+import '../view/wishlist/wishlist_view.dart';
 
-class AppRoutes {
-  static const signIn = '/signin';
+class AppRouter {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case signIn:
-        return MaterialPageRoute(builder: (_) => const SignInView());
-      default:
-        return null;
-    }
-  }
+  static GoRouter router = GoRouter(
+    navigatorKey: navigatorKey,
+    initialLocation: '/signin',
+    routes: [
+      GoRoute(
+        path: '/signin',
+        name: 'signin',
+        builder: (context, state) => const SignInView(),
+      ),
+      GoRoute(
+        path: '/signup',
+        name: 'signup',
+        builder: (context, state) => const SignupView(),
+      ),
+      GoRoute(
+        path: '/home',
+        name: 'home',
+        builder: (context, state) => HomeView(),
+      ),
+      GoRoute(
+        path: '/wishlist',
+        name: 'wishlist',
+        builder: (context, state) => const WishlistView(),
+      ),
+      GoRoute(
+        path: '/details',
+        name: 'details',
+        builder: (context, state) {
+          final item = state.extra as ItemModel;
+          return DetailsView(item: item);
+        },
+      ),
+    ],
+  );
+
+  static String get home => '/home';
+
+  static String get signin => '/signin';
 }

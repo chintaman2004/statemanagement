@@ -1,13 +1,12 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../core/app_routes.dart';
 
-class SplashViewModel with ChangeNotifier {
+class SplashViewModel extends ChangeNotifier {
   Future<void> init(BuildContext context) async {
-// Simulate small delay then navigate to SignIn
-    unawaited(Future<void>.delayed(const Duration(milliseconds: 1200), () {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacementNamed('/signin');
-      }
-    }));
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (context.mounted) {
+      Navigator.pushReplacementNamed(context, AppRouter.signin);
+    }
   }
 }
