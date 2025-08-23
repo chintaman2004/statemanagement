@@ -17,7 +17,7 @@ class SignInView extends StatelessWidget {
 }
 
 class _SignInScaffold extends StatelessWidget {
-  const _SignInScaffold({super.key});
+  const _SignInScaffold();
 
   @override
   Widget build(BuildContext context) {
