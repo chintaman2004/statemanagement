@@ -28,7 +28,7 @@ class AppRouter {
       GoRoute(
         path: '/home',
         name: 'home',
-        builder: (context, state) => HomeView(),
+        builder: (context, state) => const HomeView(),
       ),
       GoRoute(
         path: '/wishlist',

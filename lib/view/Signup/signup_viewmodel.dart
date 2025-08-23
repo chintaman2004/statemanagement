@@ -1,47 +1,27 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupViewModel extends ChangeNotifier {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
-  final confirmPassCtrl = TextEditingController();
 
-  bool obscure = true;
-  bool acceptTerms = false;
-  bool isLoading = false;
+  bool obscure = true; // ✅ non-nullable
 
   void toggleObscure() {
     obscure = !obscure;
     notifyListeners();
   }
 
-  void toggleTerms(bool value) {
-    acceptTerms = value;
-    notifyListeners();
-  }
-
-  Future<void> signup(BuildContext context) async {
-    if (!acceptTerms) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please accept terms & conditions")),
+  Future<bool> signup() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailCtrl.text.trim(),
+        password: passCtrl.text.trim(),
       );
-      return;
+      return true; // ✅ signup successful
+    } on FirebaseAuthException catch (e) {
+      debugPrint("Signup Error: ${e.message}");
+      return false;
     }
-
-    isLoading = true;
-    notifyListeners();
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    isLoading = false;
-    notifyListeners();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Signup successful")),
-    );
-
-    context.goNamed('home');
   }
 }

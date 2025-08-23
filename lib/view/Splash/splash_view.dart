@@ -1,47 +1,63 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:real_estate_app/core/app_routes.dart';
-import 'splash_viewmodel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:real_estate_app/view/signin/signin_view.dart';
+import 'package:real_estate_app/view/home/home_view.dart'; // Replace with your real home page
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => SplashViewModel(),
-      child: const _SplashScaffold(),
-    );
-  }
+  State<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashScaffold extends StatefulWidget {
-  const _SplashScaffold();
-
-  @override
-  State<_SplashScaffold> createState() => _SplashScaffoldState();
-}
-
-class _SplashScaffoldState extends State<_SplashScaffold> {
+class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    _navigate();
-  }
 
-  Future<void> _navigate() async {
-    await Future.delayed(const Duration(seconds: 2));
+    Timer(const Duration(seconds: 3), () {
+      final user = FirebaseAuth.instance.currentUser;
 
-    if (!mounted) return;
-
-    Navigator.pushReplacementNamed(context, AppRouter.signin);
+      if (user == null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const SignInView()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => HomeView()),
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 122, 164, 213),
       body: Center(
-        child: FlutterLogo(size: 100),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/logo.png',
+              height: 120,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "State Management",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+            const SizedBox(height: 40),
+            const CircularProgressIndicator(color: Colors.purple),
+          ],
+        ),
       ),
     );
   }

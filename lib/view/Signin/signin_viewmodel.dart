@@ -1,19 +1,19 @@
-// lib/view/Signin/signin_viewmodel.dart
 import 'package:flutter/material.dart';
 
 class SignInViewModel extends ChangeNotifier {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
 
-  bool _obscure = true;
-  bool get obscure => _obscure;
-
-  bool? get rememberMe => null;
-
-  ValueChanged<bool?>? get toggleRememberMe => null;
+  bool obscure = true;
+  bool rememberMe = false; // ✅ initialized to false
 
   void toggleObscure() {
-    _obscure = !_obscure;
+    obscure = !obscure;
+    notifyListeners();
+  }
+
+  void toggleRememberMe(bool? val) {
+    rememberMe = val ?? false; // ✅ null-safe
     notifyListeners();
   }
 
