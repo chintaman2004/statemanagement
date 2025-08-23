@@ -8,6 +8,10 @@ class SignInViewModel extends ChangeNotifier {
   bool _obscure = true;
   bool get obscure => _obscure;
 
+  bool? get rememberMe => null;
+
+  ValueChanged<bool?>? get toggleRememberMe => null;
+
   void toggleObscure() {
     _obscure = !_obscure;
     notifyListeners();

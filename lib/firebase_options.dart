@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'realestateapp-b535b.firebasestorage.app',
     measurementId: 'G-L5SPY0WL9R',
   );
+
 }

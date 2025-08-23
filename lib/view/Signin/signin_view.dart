@@ -1,4 +1,3 @@
-// lib/screens/auth/signin/signin_view.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -25,8 +24,8 @@ class _SignInScaffold extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,78 +33,168 @@ class _SignInScaffold extends StatelessWidget {
                 onPressed: () => Navigator.maybePop(context),
                 icon: const Icon(Icons.arrow_back_ios_new_rounded),
               ),
-              const SizedBox(height: 8),
+
+              const SizedBox(height: 12),
+
+              // Logo + Title
               Center(
                 child: Column(
                   children: [
-                    Container(
-                      width: 88,
-                      height: 88,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF1F5FF),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14.0),
-                        child: Image.asset('assets/logo.png'),
-                      ),
+                    Image.asset(
+                      'assets/logo.png',
+                      height: 120,
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Welcome Back',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                      'Login to Your Account',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 28),
+
               TextField(
                 controller: vm.emailCtrl,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.email_outlined),
-                  hintText: 'your@email.com',
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFFF7F7F7),
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  hintText: 'andrew_ainsley@yourdomain.com',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
-              const SizedBox(height: 14),
+
+              const SizedBox(height: 16),
+
               TextField(
                 controller: vm.passCtrl,
                 obscureText: vm.obscure,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFFF7F7F7),
                   prefixIcon: const Icon(Icons.lock_outline),
                   hintText: 'Password',
                   suffixIcon: IconButton(
                     onPressed: vm.toggleObscure,
                     icon: Icon(
-                        vm.obscure ? Icons.visibility_off : Icons.visibility),
+                      vm.obscure ? Icons.visibility_off : Icons.visibility,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: vm.rememberMe,
+                        onChanged: vm.toggleRememberMe,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const Text("Remember me"),
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text("Forgot the password?"),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 16),
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  // ⬇️ GoRouter navigation to the named 'home' route
-                  onPressed: () => context.goNamed('home'),
-                  child: const Text('Sign In'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2979FF),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.goNamed('home');
+                  },
+                  child: const Text(
+                    'Sign in',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
+
+              const SizedBox(height: 24),
+              const Row(
+                children: [
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text("or continue with"),
+                  ),
+                  Expanded(child: Divider()),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _socialButton("assets/facebook.png"),
+                  _socialButton("assets/google.png"),
+                  _socialButton("assets/apple.png"),
+                ],
+              ),
+
+              const SizedBox(height: 28),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account? "),
+                  const Text("Don’t have an account? "),
                   TextButton(
-                    // ⬇️ GoRouter push to 'signup'
                     onPressed: () => context.pushNamed('signup'),
-                    child: const Text('Sign Up'),
+                    child: const Text('Sign up'),
                   ),
                 ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _socialButton(String assetPath) {
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE0E0E0)),
+      ),
+      child: Center(
+        child: Image.asset(assetPath, height: 28),
       ),
     );
   }
